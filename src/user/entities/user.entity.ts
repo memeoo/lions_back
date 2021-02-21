@@ -35,4 +35,7 @@ export class User extends CoreEntity{
     @Column()
     belongTo:string;
 
+    @Column({nullable:true})
+    imgName:string;
+
 }

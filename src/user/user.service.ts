@@ -32,8 +32,6 @@ export class UserService {
   async deleteUser(userId: number): Promise<CoreOutput>{
     const result = await this.users.delete({id:userId});
     console.log("result => ", result);
-    const users = await this.users.find();
-    console.log("users => ", users);
     
     if(result){
       return {ok:true, error:""};
@@ -71,6 +69,7 @@ export class UserService {
   }
 
   async getOneMember(userId: number) : Promise<User>{
+    console.log(" userId => ", userId);
     const user = await this.users.findOne({id:userId});
     console.log(" one user => ", user);
     return user;

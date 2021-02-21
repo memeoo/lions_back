@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { CreateUserDto } from './entities/dtos/create-user.dto';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import * as AWS  from 'aws-sdk';
 
 @Controller('member')
 export class UserController {
@@ -27,9 +28,33 @@ export class UserController {
   }
 
   @Delete()
-  deleteUser(@Req() req): Promise<CoreOutput>{
+  async deleteUser(@Req() req): Promise<CoreOutput> {
     console.log(" params 22 => ", req.query);
+    const BUCKET_NAME = "clublions";
+    const REGION = "ap-northeast-2";
+    AWS.config.update({
+      region: REGION,
+      credentials: {
+        accessKeyId: 'AKIAY3OJDC42R2W3MZLQ',
+        secretAccessKey: '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'
+      },
+    })
+
+    const {imgName} = await this.userService.getOneMember(req.query.id);
+    console.log(" imgName => ", imgName);
+
+    if(imgName){
+      try{
+        await new AWS.S3().deleteObject({
+          Bucket: BUCKET_NAME,
+          Key: imgName,
+        }).promise();
+      }catch(ex){
+        console.log(" ex >>> ", ex);
+      };
+    }
     return this.userService.deleteUser(req.query.id);
+    
   }  
 
   @Put()
@@ -44,8 +69,40 @@ export class UserController {
   
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file){
+  async uploadFile(@UploadedFile() file, @Body() data){
     console.log("file upload => ", file);
+    console.log("data => ", data);
+    console.log("process.env.AWS_ACCESS_KEY => ", process.env.AWS_ACCESS_KEY);
+    console.log("process.env.AWS_SECRET_ACCESS_KEY => ", process.env.AWS_SECRET_ACCESS_KEY);;
+
+    const BUCKET_NAME = "clublions";
+    const REGION = "ap-northeast-2";
+    AWS.config.update({
+      region: REGION,
+      credentials:{
+        accessKeyId: 'AKIAY3OJDC42R2W3MZLQ',
+        secretAccessKey: '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'
+      },
+    })
+
+    try{
+      // const objectName = `${Date.now()+file.originalname}`
+      const objectName = data.imgName
+      await new AWS.S3().putObject({
+        Body: file.buffer,
+        Bucket: BUCKET_NAME,
+        Key: objectName,
+        ACL: 'public-read',  
+      }).promise();
+
+      const url = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${objectName}`;
+      
+      return { url };
+    }catch (e) {
+      console.log(" eee >>> ", e);
+      return null;
+    }
+
   }
 }
  
