@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Req } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { Jigu, Jiyeok, Jidae, Club } from './entities/group.entity';
 import { CoreOutput } from 'src/common/dtos/output.dto';
+import { CreateClubDto } from './entities/dto/create-club.dto';
 // import { CreateUserDto } from './entities/dtos/create-user.dto';
 
 interface resultVal {
@@ -33,6 +34,24 @@ export class GroupController {
   getClubs(@Req() req): Promise<resultVal[]> {
     console.log(" params query => ", req.query);
     return this.groupService.getClubs(req.query.id);
+  }
+
+  @Get('allclubs')
+  getAllClubs(@Req() req): Promise<resultVal[]> {
+    console.log(" params query => ", req.query);
+    return this.groupService.getAllClubs();
+  }
+
+  @Get('clubInfo')
+  getClubInfo(@Req() req): Promise<resultVal[]> {
+    console.log(" params query => ", req.query);
+    return this.groupService.getClubInfo(req.query.id);
+  }
+
+  
+  @Post('club')
+  setClubInfo(@Body() createClubDto : CreateClubDto): Promise<CoreOutput> {
+    return this.groupService.setClub(createClubDto);
   }
 
   // @Post()

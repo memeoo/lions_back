@@ -2,12 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Repository } from 'typeorm';
+import { CreateClubDto } from './entities/dto/create-club.dto';
 import {Jigu, Jiyeok, Jidae, Club} from './entities/group.entity'; 
 // import { CreateUserDto } from './entities/dtos/create-user.dto';
 
 interface resultVal {
   id:number,
   name:string,
+  
+}
+
+interface clubInfo extends resultVal{
+  sponsorClub:number,
 }
 
 @Injectable()
@@ -74,6 +80,49 @@ export class GroupService {
     return allClubs; 
   }
 
+  async getClubInfo(clubId:number): Promise<resultVal[]> {
+    const clubInfo : clubInfo[] = await this.clubs.find({
+      where: {
+        id: clubId
+      }
+    });
+    console.log(" clubInfo >> ", clubInfo);
+    const sponsorClubName : clubInfo[] = await this.clubs.find({
+      select:["name"],
+      where: {
+        id: clubInfo[0].sponsorClub
+      }
+    });
+    // console.log(" sponsorClubName => ", sponsorClubName[0].name);
+    // clubInfo[0]['sponsorClubName'] = sponsorClubName[0].name;
+    return clubInfo; 
+  }
+
+  async getAllClubs(): Promise<resultVal[]> {
+    const allClubs : resultVal[] = await this.clubs.find({
+      select:["id","name"],
+      order: {
+        id: 'ASC'
+      }
+    });
+    console.log(" allClubs => ", allClubs);
+    // allClubs.unshift({id:0, name:"클럽을 입력하세요."});
+    return allClubs; 
+  }
+
+
+  async setClub(clubData : CreateClubDto): Promise<CoreOutput>{
+    console.log(" clubData => ", clubData);
+    // const mobile = clubData.mobileNum;
+    // const exist = await this.clubs.findOne({mobileNum:mobile})
+    // if(exist){
+    //   // update 
+    //   return {ok:false, error:'The user already exists'};
+    // }
+    const updatedClub = await this.clubs.update({id:clubData.id}, clubData);
+    return {ok:true}  
+  }
+  
   // async addMember(userData : CreateUserDto): Promise<CoreOutput>{
   //   console.log(" userData => ", userData);
   //   const mobile = userData.mobileNum;

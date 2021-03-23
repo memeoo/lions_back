@@ -1,7 +1,15 @@
 import { IsString, IsNumber, IsEmail, IsPhoneNumber, Min, Max, IsDate, Length} from 'class-validator';
 export class CreateUserDto{
     name:string;
-    position:string;  
+    
+    positionClub:string;
+    positionJigu:string;
+    positionJiyeok:string;
+
+    positionFreeClub:string;  
+    positionFreeJigu:string;
+    positionFreeJiyeok:string;  
+
     startDay:string;
     job:string;
     address:string;

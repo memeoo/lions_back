@@ -8,7 +8,8 @@ import { AdminModule } from './admin/admin.module';
 import { CommonModule } from './common/common.module';
 import { GroupModule} from './group/group.module';
 import { Jigu, Jiyeok, Jidae, Club } from './group/entities/group.entity';
-
+import { SponModule } from './spon/spon.module';
+import { Spon } from './spon/entities/spon.entity';
 
 @Module({
   imports: [
@@ -21,13 +22,14 @@ import { Jigu, Jiyeok, Jidae, Club } from './group/entities/group.entity';
       "database": "lions",
       "synchronize": true,
       "logging": false,
-      "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club],
+      "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club, Spon],
     }),
     // GraphQLModule.forRoot({autoSchemaFile: 'schema.gql', playground:true}),
     UserModule,
     AdminModule,
     CommonModule,
     GroupModule,
+    SponModule,
   ],
   controllers: [],
   providers: [],
