@@ -56,4 +56,7 @@ export class User extends CoreEntity{
     @Column({nullable:true})
     sponId:number;
 
+    @Column({nullable:true})
+    supportCnt:number;
+
 }

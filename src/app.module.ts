@@ -10,6 +10,7 @@ import { GroupModule} from './group/group.module';
 import { Jigu, Jiyeok, Jidae, Club } from './group/entities/group.entity';
 import { SponModule } from './spon/spon.module';
 import { Spon } from './spon/entities/spon.entity';
+import { Support } from './spon/entities/support.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Spon } from './spon/entities/spon.entity';
       "database": "lions",
       "synchronize": true,
       "logging": false,
-      "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club, Spon],
+      "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club, Spon, Support],
     }),
     // GraphQLModule.forRoot({autoSchemaFile: 'schema.gql', playground:true}),
     UserModule,

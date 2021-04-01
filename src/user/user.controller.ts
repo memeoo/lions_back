@@ -6,6 +6,16 @@ import { CoreOutput } from 'src/common/dtos/output.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as AWS  from 'aws-sdk';
 
+export interface UpdatedMemberWithSponsor {
+  memberId: number,
+  sponsorId: number,
+}
+
+export interface UpdatedMemberWithSupport {
+  memberId: number,
+  supportCnt: number,
+}
+
 @Controller('member')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -61,6 +71,19 @@ export class UserController {
   updateMember(@Body() createUserDto: CreateUserDto) : Promise<CoreOutput>{
     return this.userService.updateMember(createUserDto);
   }
+
+  @Put('sponsor')
+  updateMemberWithSponsorId(@Body() upadatedMemberWithSponsor: UpdatedMemberWithSponsor) : Promise<CoreOutput>{
+    console.log("upadatedMemberWithSponsor nest >>>>  ", upadatedMemberWithSponsor);
+    return this.userService.updateMemberWithSponsorId(upadatedMemberWithSponsor);
+  }
+
+  @Put('support')
+  updateMemberWithSupportId(@Body() upadatedMemberWithSupport: UpdatedMemberWithSupport) : Promise<CoreOutput>{
+    console.log("upadatedMemberWithSponsor nest >>>>  ", upadatedMemberWithSupport);
+    return this.userService.updateMemberWithSupportId(upadatedMemberWithSupport);
+  }
+
 
   @Post()
   addMember(@Body() createUserDto: CreateUserDto) : Promise<CoreOutput>{

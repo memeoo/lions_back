@@ -6,10 +6,14 @@ import { CreateClubDto } from './entities/dto/create-club.dto';
 import {Jigu, Jiyeok, Jidae, Club} from './entities/group.entity'; 
 // import { CreateUserDto } from './entities/dtos/create-user.dto';
 
+type jidaeClub = {
+  jidae:string,
+  clubs:Array<Object>,
+}
+
 interface resultVal {
   id:number,
   name:string,
-  
 }
 
 interface clubInfo extends resultVal{
@@ -110,6 +114,48 @@ export class GroupService {
     return allClubs; 
   }
 
+  async getJiguClubs(jiguId: number):Promise<resultVal[]>{
+    const jiguClubs : resultVal[] = await this.clubs.find({
+      select:["id","name"],
+      order: {
+        id: 'ASC'
+      }
+    });
+    return jiguClubs;
+  }
+  
+  async getJiyeokClubs(jiyeokId: number):Promise<Array<jidaeClub>>{
+    const jidaes = await this.jidaes.find({
+      select:["id","name"],
+      order:{
+        id:'ASC'
+      },
+      where:{
+        belongTo: jiyeokId
+      }
+    });
+    console.log(" jidaes ==> ", jidaes);
+
+    let finalClubs = [];
+    for(let i=0; i < jidaes.length; i++){
+      let eachClubs = await this.getJidaeClubs(jidaes[i].id);
+      finalClubs.push({jidae:jidaes[i].name, clubs: eachClubs});
+    }
+    console.log(" finalClubs ==> ", finalClubs);
+    return finalClubs;
+  }
+  
+  async getJidaeClubs(jidaeId: number):Promise<resultVal[]>{
+    const getJidaeClubs : resultVal[] = await this.clubs.find({
+      order: {
+        id: 'ASC'
+      },
+      where:{
+        belongTo: jidaeId
+      }
+    });
+    return getJidaeClubs;
+  } 
 
   async setClub(clubData : CreateClubDto): Promise<CoreOutput>{
     console.log(" clubData => ", clubData);

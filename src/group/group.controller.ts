@@ -10,6 +10,11 @@ interface resultVal {
   name:string,
 }
 
+type jidaeClub = {
+  jidae:string,
+  clubs:Array<Object>,
+}
+
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
@@ -34,6 +39,18 @@ export class GroupController {
   getClubs(@Req() req): Promise<resultVal[]> {
     console.log(" params query => ", req.query);
     return this.groupService.getClubs(req.query.id);
+  }
+
+  @Get('jiguclubs')
+  getGiguClubs(@Req() req): Promise<resultVal[]> {
+    console.log(" params query => ", req.query);
+    return this.groupService.getJiguClubs(req.query.id);
+  }
+
+  @Get('jiyeokclubs')
+  getJiyeokClubs(@Req() req): Promise<jidaeClub[]> {
+    console.log(" params query => ", req.query);
+    return this.groupService.getJiyeokClubs(req.query.id);
   }
 
   @Get('allclubs')

@@ -9,3 +9,11 @@ export class CreateSponDto{
     title: string;
     type: string;
 }
+
+export class CreateSupportDto{
+    owner:number;
+    support: string;
+    supportMoney: string;
+    supportDay: string;
+    type: string;
+}
