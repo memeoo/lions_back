@@ -1,7 +1,5 @@
 import { Column, Entity } from "typeorm";
 import { CoreEntity } from "src/common/entities/core.entity";
-
-
 @Entity()
 export class Spon extends CoreEntity{
 

@@ -13,8 +13,8 @@ export class Jiyeok extends CoreEntity{
     @Column()
     name:string;
 
-    @Column()
-    belongTo:string;
+    @Column({nullable:true})
+    belongTo:number;
 }
 
 @Entity()
@@ -23,8 +23,8 @@ export class Jidae extends CoreEntity{
     @Column()
     name:string;
 
-    @Column()
-    belongTo:string;
+    @Column({nullable:true})
+    belongTo:number;
 
 }
 
@@ -34,8 +34,8 @@ export class Club extends CoreEntity{
     @Column()
     name:string;
 
-    @Column()
-    belongTo:string;
+    @Column({nullable:true})
+    belongTo:number;
 
     @Column({nullable:true})
     startDay:string;

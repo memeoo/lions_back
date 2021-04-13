@@ -17,5 +17,10 @@ export class CreateUserDto{
     phoneNumHome:string;
     phoneNumWork:string;
     email:string;
-    belongTo:string;
+    belongTo:number;
+
+    belongToJigu:number;
+    belongToJiyeok:number;
+    belongToJidae:number;
+
 }

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CoreEntity } from "src/common/entities/core.entity";
+import { Club } from "src/group/entities/group.entity";
 
 
 @Entity()
@@ -47,8 +48,17 @@ export class User extends CoreEntity{
     @Column()
     email:string;
 
-    @Column()
-    belongTo:string;
+    @ManyToOne(type => Club, club => club.id)
+    belongTo:number;
+
+    @Column({nullable:true})
+    belongToJidae:number;
+
+    @Column({nullable:true})
+    belongToJiyeok:number;
+
+    @Column({nullable:true})
+    belongToJigu:number;
 
     @Column({nullable:true})
     imgName:string;

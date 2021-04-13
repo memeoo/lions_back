@@ -37,6 +37,18 @@ export class UserController {
     return this.userService.getUsersInClub(req.query.id);
   }
 
+  @Get('jiguMembers')
+  getJiguMembers(@Req() req): Promise<Array<CreateUserDto>> {
+    console.log(" params 11 => ", req.query);
+    return this.userService.getJiguMembers(req.query.id);
+  }
+
+  @Get('jiyeokMembers')
+  getJiyeokMembers(@Req() req): Promise<Array<CreateUserDto>> {
+    console.log(" params 11 => ", req.query);
+    return this.userService.getJiyeokMembers(req.query.id);
+  }
+
   @Delete()
   async deleteUser(@Req() req): Promise<CoreOutput> {
     console.log(" params 22 => ", req.query);

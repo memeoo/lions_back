@@ -53,6 +53,12 @@ export class GroupController {
     return this.groupService.getJiyeokClubs(req.query.id);
   }
 
+  @Get('jiyeokMembers')
+  getJiyeokMembers(@Req() req): Promise<jidaeClub[]> {
+    console.log(" params query => ", req.query);
+    return this.groupService.getJiyeokClubs(req.query.id);
+  }
+
   @Get('allclubs')
   getAllClubs(@Req() req): Promise<resultVal[]> {
     console.log(" params query => ", req.query);

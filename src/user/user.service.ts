@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IsNull, SelectQueryBuilder} from "typeorm";
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './entities/dtos/create-user.dto';
 import { User } from './entities/user.entity';
+import { Club } from '../group/entities/group.entity';
 import {Support} from '../spon/entities/support.entity';
 import {UpdatedMemberWithSponsor, UpdatedMemberWithSupport} from './user.controller';
 
@@ -12,6 +14,7 @@ import {UpdatedMemberWithSponsor, UpdatedMemberWithSupport} from './user.control
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly users: Repository<User>,
+    @InjectRepository(Club) private readonly clubs: Repository<Club>,
     @InjectRepository(Support) private readonly supports: Repository<Support>,
   ){}
   
@@ -31,6 +34,26 @@ export class UserService {
     });
     console.log(" users >> ", users);
     return users;
+  }
+
+  async getJiguMembers(jiguId: number) : Promise<Array<CreateUserDto>>{
+    const jigumembers = this.users.createQueryBuilder("member")
+    .leftJoinAndSelect("member.belongTo", "club")
+    .where("member.belongToJigu = :jiguId ", {jiguId : jiguId})
+    .andWhere("member.positionJigu is not null OR member.positionFreeJigu is not null")
+    .getMany();
+    console.log(" jigumembers >> ", jigumembers);
+    return jigumembers;
+  }
+
+  async getJiyeokMembers(jiyeokId: number) : Promise<Array<CreateUserDto>>{
+    const jiyeokmembers = this.users.createQueryBuilder("member")
+    .leftJoinAndSelect("member.belongTo", "club")
+    .where("member.belongToJiyeok = :jiyeokId ", {jiyeokId : jiyeokId})
+    .andWhere("member.positionJiyeok is not null OR member.positionFreeJiyeok is not null")
+    .getMany();
+    console.log(" jiyeokMembers >> ", jiyeokmembers);
+    return jiyeokmembers;
   }
 
   async deleteUser(userId: number): Promise<CoreOutput>{

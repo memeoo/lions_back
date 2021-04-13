@@ -11,6 +11,8 @@ import { Jigu, Jiyeok, Jidae, Club } from './group/entities/group.entity';
 import { SponModule } from './spon/spon.module';
 import { Spon } from './spon/entities/spon.entity';
 import { Support } from './spon/entities/support.entity';
+import { Notice } from './notice/entities/notice.entity';
+import { NoticeModule } from './notice/notice.module';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { Support } from './spon/entities/support.entity';
       "database": "lions",
       "synchronize": true,
       "logging": false,
-      "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club, Spon, Support],
+      "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club, Spon, Support, Notice],
     }),
     // GraphQLModule.forRoot({autoSchemaFile: 'schema.gql', playground:true}),
     UserModule,
@@ -31,6 +33,7 @@ import { Support } from './spon/entities/support.entity';
     CommonModule,
     GroupModule,
     SponModule,
+    NoticeModule,
   ],
   controllers: [],
   providers: [],
