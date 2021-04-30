@@ -1,10 +1,11 @@
-import { Column, Entity } from "typeorm";
-import { CoreEntity } from "src/common/entities/core.entity";
+import { Column, Entity, OneToOne } from "typeorm";
+import { CoreEntity} from "src/common/entities/core.entity";
+import { User } from "src/user/entities/user.entity";
 @Entity()
 export class Spon extends CoreEntity{
 
-    @Column()
-    owner:number; // member id to do sponsor
+    @Column({nullable:true})
+    owner:number; //  owner -> userId
 
     @Column({nullable:true})
     address:string;

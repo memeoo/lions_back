@@ -6,6 +6,22 @@ import { Spon } from './entities/spon.entity';
 import { Support } from './entities/support.entity';
 import {SponsorOutput, SupportOutput} from './spon.service';
 
+export interface SponsorNMember{
+  id: number,
+  clubName: string,
+  sponsorName: string,
+  positionClub?: string,
+  positionFreeClub?: string,
+  positionJigu?: string,
+  positionFreeJigu?: string,
+  positionJiyeok?: string,
+  positionFreeJiyeok?: string,
+  imgName: string,
+  mobileNum: string,
+  sponsorImgName: string,
+  sponsorTel: string,
+}
+
 @Controller('spon')
 export class SponController {
     constructor(private readonly sponService: SponService) {}
@@ -49,4 +65,10 @@ export class SponController {
       return this.sponService.deleteSupport(req.query.id);
     }
     
+    @Get('byunit')
+    getSponsorsWith(@Req() req): Promise<Array<SponsorNMember>> {
+      console.log(" params 11 => ", req.query);
+      return this.sponService.getSponsorByUnit(req.query.with, req.query.id);
+    }
+
 }

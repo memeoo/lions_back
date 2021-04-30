@@ -5,6 +5,7 @@ import { CreateUserDto } from './entities/dtos/create-user.dto';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as AWS  from 'aws-sdk';
+import { SponsorNMember } from 'src/spon/spon.controller';
 
 export interface UpdatedMemberWithSponsor {
   memberId: number,
@@ -14,6 +15,11 @@ export interface UpdatedMemberWithSponsor {
 export interface UpdatedMemberWithSupport {
   memberId: number,
   supportCnt: number,
+}
+
+export interface UpdatedMemberWithDeviceId {
+  memberId: number,
+  deviceId: string,
 }
 
 @Controller('member')
@@ -29,6 +35,18 @@ export class UserController {
   getOneMember(@Req() req): Promise<User>{
     console.log(" params 00 >>> ", req.query);
     return this.userService.getOneMember(req.query.id);
+  }
+
+  @Get('getByDeviceId')
+  getOneMemberByDeviceId(@Req() req): Promise<User>{
+    console.log(" params 00 >>> ", req.query);
+    return this.userService.getOneByDeviceId(req.query.id);
+  }
+
+  @Get('getByPhone')
+  getOneMemberByPhoneNum(@Req() req): Promise<User>{
+    console.log(" params 00 >>> ", req.query);
+    return this.userService.getOneByPhoneNum(req.query.id);
   }
 
   @Get('club')
@@ -58,8 +76,7 @@ export class UserController {
       region: REGION,
       credentials: {
         accessKeyId: 'AKIAY3OJDC42R2W3MZLQ',
-        secretAccessKey: '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'
-      },
+        secretAccessKey: '87MO+7CLVD0Us0annRaGiC4R54M70RONi80gJyUn'                                                                         },
     })
 
     const {imgName} = await this.userService.getOneMember(req.query.id);
@@ -96,12 +113,16 @@ export class UserController {
     return this.userService.updateMemberWithSupportId(upadatedMemberWithSupport);
   }
 
+  @Put('addDeviceId')
+  addDeviceId(@Body() updatedMemberWithDeviceId: UpdatedMemberWithDeviceId) : Promise<CoreOutput>{
+    return this.userService.updateMemberWithDeviceId(updatedMemberWithDeviceId);
+  }
 
   @Post()
   addMember(@Body() createUserDto: CreateUserDto) : Promise<CoreOutput>{
     return this.userService.addMember(createUserDto);
   }
-  
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file, @Body() data){
@@ -138,6 +159,12 @@ export class UserController {
       return null;
     }
 
+  }
+
+  @Get('byunit')
+  getSponsorsWith(@Req() req): Promise<Array<SponsorNMember>> {
+    console.log(" params @@@@@ => ", req.query);
+    return this.userService.getSponsorByUnit(req.query.with, req.query.id);
   }
 }
  

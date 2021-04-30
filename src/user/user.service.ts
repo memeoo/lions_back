@@ -7,7 +7,8 @@ import { CreateUserDto } from './entities/dtos/create-user.dto';
 import { User } from './entities/user.entity';
 import { Club } from '../group/entities/group.entity';
 import {Support} from '../spon/entities/support.entity';
-import {UpdatedMemberWithSponsor, UpdatedMemberWithSupport} from './user.controller';
+import {UpdatedMemberWithSponsor, UpdatedMemberWithSupport, UpdatedMemberWithDeviceId} from './user.controller';
+import { SponsorNMember } from 'src/spon/spon.controller';
 
 
 @Injectable()
@@ -34,7 +35,7 @@ export class UserService {
     });
     console.log(" users >> ", users);
     return users;
-  }
+  } 
 
   async getJiguMembers(jiguId: number) : Promise<Array<CreateUserDto>>{
     const jigumembers = this.users.createQueryBuilder("member")
@@ -55,6 +56,17 @@ export class UserService {
     console.log(" jiyeokMembers >> ", jiyeokmembers);
     return jiyeokmembers;
   }
+
+  async getSponsorByUnit(unit: string, id: number) : Promise<Array<any>> {
+    // unit : club, jidae, jiyeok, jigu // id: 해당 unit의 id ex) clubId, jidaeId, ....
+    const sponWithMember = this.users.createQueryBuilder("user")
+    .leftJoinAndSelect("user.sponId", "spon")
+    .where("user.belongToJiyeok = :jiyeok ", {jiyeok : id})
+    .getMany();
+    console.log(" sponWithMember >> ", sponWithMember);
+
+    return sponWithMember;
+  };
 
   async deleteUser(userId: number): Promise<CoreOutput>{
     const result = await this.users.delete({id:userId});
@@ -104,6 +116,13 @@ export class UserService {
     return {ok:true};
   }
 
+  
+  async updateMemberWithDeviceId(updateMemberWithDeviceId: UpdatedMemberWithDeviceId) : Promise<CoreOutput>{
+    console.log(" updatedMemberWithSponsor service >> ", updateMemberWithDeviceId);
+    const updatedUser = await this.users.update(updateMemberWithDeviceId.memberId, {deviceId: updateMemberWithDeviceId.deviceId});
+    console.log(" updatedMemberWithSponsor updatedUser >> ", updatedUser);
+    return {ok:true};
+  }
 
   async getOneMember(userId: number) : Promise<User>{
     console.log(" userId => ", userId);
@@ -111,4 +130,20 @@ export class UserService {
     console.log(" one user => ", user);
     return user;
   }
+
+  async getOneByDeviceId(deviceId: string) : Promise<User>{
+    console.log(" deviceId => ", deviceId);
+    const user = await this.users.findOne({deviceId:deviceId});
+    console.log(" one user => ", user);
+    return user;
+  }
+
+  async getOneByPhoneNum(phoneNum: string) : Promise<User>{
+    console.log(" phoneNum => ", phoneNum);
+    const user = await this.users.findOne({mobileNum:phoneNum});
+    console.log(" one user => ", user);
+    return user;
+  }
+
+
 }

@@ -17,24 +17,17 @@ export class AdminService {
     return admins;
   }
 
-  async createAdmin({
-    mId,
-    pass, 
-    mobile,
-    email,
-  }: CreateAdminInput): Promise<CreateAdminOutput>{
+  async createAdmin(createAdminInput: CreateAdminInput): Promise<CreateAdminOutput>{
     try {
-      const exists = await this.admins.findOne({ mId });
+      const exists = await this.admins.findOne({mId: createAdminInput.mId});
       if (exists) {
         return { ok: false, error: 'There is a user with that id already' };
       }
-
-      const admin = await this.admins.save(
-        this.admins.create({ mId, pass, mobile, email}),
-      );
-
+      const admin = await this.admins.save(createAdminInput);
       return { ok: true };
+
     } catch (e) {
+      console.log(" e >>>> ", e);
       return { ok: false, error: "Couldn't create account" };
     }
   }
@@ -43,7 +36,7 @@ export class AdminService {
     try {
       console.log(" paramObj > ", paramObj);
       const admin = await this.admins.findOne(
-        { mId: paramObj.mId }
+        { mId: paramObj.mId, isConfirmed:true }
       );
       if (!admin) {
         return  {

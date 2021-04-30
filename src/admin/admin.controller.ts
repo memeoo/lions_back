@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req, Body } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { Admin } from './entities/admin.entity';
 // import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
@@ -16,6 +16,12 @@ export class AdminController {
   @Get()
   async login(@Req() req) {
     return this.adminService.login(req.query)
+  }
+
+  
+  @Post()
+  async signup(@Body() createAdminInput: CreateAdminInput) {
+    return this.adminService.createAdmin(createAdminInput)
   }
 
 

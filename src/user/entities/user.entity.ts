@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CoreEntity } from "src/common/entities/core.entity";
 import { Club } from "src/group/entities/group.entity";
+import { Spon } from "src/spon/entities/spon.entity";
 
 
 @Entity()
@@ -63,10 +64,14 @@ export class User extends CoreEntity{
     @Column({nullable:true})
     imgName:string;
     
-    @Column({nullable:true})
+    @OneToOne(type => Spon, spon => spon.id, {nullable:true})
+    @JoinColumn()
     sponId:number;
 
     @Column({nullable:true})
     supportCnt:number;
+
+    @Column({nullable:true})
+    deviceId:string;
 
 }

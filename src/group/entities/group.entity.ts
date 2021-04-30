@@ -38,6 +38,12 @@ export class Club extends CoreEntity{
     belongTo:number;
 
     @Column({nullable:true})
+    jiyeokId:number;
+    
+    @Column({nullable:true})
+    jiguId:number;
+
+    @Column({nullable:true})
     startDay:string;
 
     @Column({nullable:true})

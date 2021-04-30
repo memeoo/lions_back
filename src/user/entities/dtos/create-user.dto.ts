@@ -23,4 +23,5 @@ export class CreateUserDto{
     belongToJiyeok:number;
     belongToJidae:number;
 
+    deviceId:string;
 }

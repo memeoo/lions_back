@@ -4,6 +4,7 @@ import { Jigu, Jiyeok, Jidae, Club } from './entities/group.entity';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { CreateClubDto } from './entities/dto/create-club.dto';
 // import { CreateUserDto } from './entities/dtos/create-user.dto';
+import {BelongToInfo} from './group.service';
 
 interface resultVal {
   id:number,
@@ -71,10 +72,15 @@ export class GroupController {
     return this.groupService.getClubInfo(req.query.id);
   }
 
-  
   @Post('club')
   setClubInfo(@Body() createClubDto : CreateClubDto): Promise<CoreOutput> {
     return this.groupService.setClub(createClubDto);
+  }
+
+  @Get('belongto')
+  getBelongToFromClub(@Req() req): Promise<BelongToInfo> {
+    console.log(" params 11 => ", req.query);
+    return this.groupService.getBelongToFromClub(req.query.id);
   }
 
   // @Post()

@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateSponDto, CreateSupportDto } from './entities/dtos/create-spon.dto';
 import { Spon } from './entities/spon.entity';
 import { Support } from './entities/support.entity';
+import { SponsorNMember } from './spon.controller';
 
 export interface SponsorOutput extends CoreOutput {
     ownerId?:number,
@@ -92,5 +93,19 @@ export class SponService {
           return {ok:false, error:"error"};
         }
     }
+
+    async getSponsorByUnit(unit: string, id: number) : Promise<Array<SponsorNMember>> {
+        // unit : club, jidae, jiyeok, jigu // id: 해당 unit의 id ex) clubId, jidaeId, ....
+        
+        const sponWithMember = this.spons.createQueryBuilder("spon")
+        .innerJoinAndSelect("spon.owner", "user")
+        // .where("user.belongToJiyeok = :jiyeok ", {jiyeok : id})
+        .getMany();
+        console.log(" sponWithMember >> ", sponWithMember);
+    
+        return [];
+      };
+
+      
 } 
 

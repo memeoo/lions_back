@@ -15,8 +15,23 @@ export class Admin extends CoreEntity{
     @Column()
     mobile:string;
 
-    @Column()
+    @Column({nullable:true})
     email:string;
+
+    @Column({nullable:true})
+    club:number;
+
+    @Column({nullable:true})
+    jidae:number;
+
+    @Column({nullable:true})
+    jiyeok:number;
+
+    @Column({nullable:true})
+    jigu:number;
+
+    @Column({nullable:true, default:false})
+    isConfirmed:boolean;
 
     @BeforeInsert()
     @BeforeUpdate()
@@ -40,4 +55,7 @@ export class Admin extends CoreEntity{
             throw new InternalServerErrorException();
         }
     }
+
+
+
 }

@@ -20,6 +20,12 @@ interface clubInfo extends resultVal{
   sponsorClub:number,
 }
 
+export interface BelongToInfo {
+  belongTo: number,
+  jiyeokId: number,
+  jiguId:number,
+}
+
 @Injectable()
 export class GroupService {
   constructor(
@@ -169,16 +175,15 @@ export class GroupService {
     return {ok:true}  
   }
   
-  // async addMember(userData : CreateUserDto): Promise<CoreOutput>{
-  //   console.log(" userData => ", userData);
-  //   const mobile = userData.mobileNum;
-  //   const exist = await this.users.findOne({mobileNum:mobile})
-  //   if(exist){
-  //     return {ok:false, error:'The user already exists'};
-  //   }
+  async getBelongToFromClub(clubId: number) : Promise<BelongToInfo>{
+    const belongToInfo = await this.clubs.findOne({
+      select:["belongTo","jiyeokId","jiguId"],
+      where : {
+        id:clubId
+      }
+    });
+    console.log(" belongToInfo >> ", belongToInfo);
+    return belongToInfo;
+  } 
 
-  //   const addedUser = await this.users.save(userData);
-  //   return {ok:true}
-  
-  // }
 }
