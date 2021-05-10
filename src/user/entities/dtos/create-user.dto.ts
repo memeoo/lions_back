@@ -6,6 +6,8 @@ export class CreateUserDto{
     positionJigu:string;
     positionJiyeok:string;
 
+    positionClubVal:number;
+
     positionFreeClub:string;  
     positionFreeJigu:string;
     positionFreeJiyeok:string;  
@@ -18,7 +20,9 @@ export class CreateUserDto{
     phoneNumWork:string;
     email:string;
     belongTo:number;
+    sponIdId?:number;
 
+    clubName:string;
     belongToJigu:number;
     belongToJiyeok:number;
     belongToJidae:number;

@@ -4,6 +4,8 @@ import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Repository } from 'typeorm';
 import { CreateClubDto } from './entities/dto/create-club.dto';
 import {Jigu, Jiyeok, Jidae, Club} from './entities/group.entity'; 
+import { User } from '../user/entities/user.entity';
+
 // import { CreateUserDto } from './entities/dtos/create-user.dto';
 
 type jidaeClub = {
@@ -15,6 +17,22 @@ interface resultVal {
   id:number,
   name:string,
 }
+
+interface ChairManInClub{
+  id:number,
+  name: string, 
+  imgName: string,
+
+}
+
+interface ChairManClubJidae{
+  jidae
+  clubName:number,
+  name: string, 
+  imgName: string,
+
+}
+
 
 interface clubInfo extends resultVal{
   sponsorClub:number,
@@ -32,7 +50,8 @@ export class GroupService {
     @InjectRepository(Jigu) private readonly jigus: Repository<Jigu>,
     @InjectRepository(Jiyeok) private readonly jiyeoks: Repository<Jiyeok>,
     @InjectRepository(Jidae) private readonly jidaes: Repository<Jidae>,
-    @InjectRepository(Club) private readonly clubs: Repository<Club>
+    @InjectRepository(Club) private readonly clubs: Repository<Club>,
+    @InjectRepository(User) private readonly users: Repository<User>
     ){}
 
     async getAllJigus(): Promise<resultVal[]> {
@@ -145,7 +164,22 @@ export class GroupService {
     let finalClubs = [];
     for(let i=0; i < jidaes.length; i++){
       let eachClubs = await this.getJidaeClubs(jidaes[i].id);
-      finalClubs.push({jidae:jidaes[i].name, clubs: eachClubs});
+      
+      let clubNChairman = [];
+      for(let j=0; j < eachClubs.length; j++){
+        let chairManInfo = await this.getChairmanInClub(eachClubs[j].id);
+        clubNChairman.push({
+          clubInfo: eachClubs[j], chairmanInfo: chairManInfo
+        });
+
+      };
+
+      // let clubNChairman = eachClubs.map(each => {
+      //    let chairManInfo = this.getChairmanInClub(each.id);
+      //    return {clubInfo: each, chairmanInfo: chairManInfo};
+      // });
+
+      finalClubs.push({jidae:jidaes[i].name, clubs: clubNChairman});
     }
     console.log(" finalClubs ==> ", finalClubs);
     return finalClubs;
@@ -160,7 +194,19 @@ export class GroupService {
         belongTo: jidaeId
       }
     });
+    
     return getJidaeClubs;
+  }
+  
+  async getChairmanInClub(clubId:number): Promise<ChairManInClub>{
+    const chairmanInClub = await this.users.findOne({
+      select:["id","name","imgName"],
+      where : {
+        belongTo:clubId,
+        positionClub:"회장"
+      }
+    }); 
+    return chairmanInClub;
   } 
 
   async setClub(clubData : CreateClubDto): Promise<CoreOutput>{

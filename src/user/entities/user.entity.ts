@@ -3,7 +3,6 @@ import { CoreEntity } from "src/common/entities/core.entity";
 import { Club } from "src/group/entities/group.entity";
 import { Spon } from "src/spon/entities/spon.entity";
 
-
 @Entity()
 export class User extends CoreEntity{
 
@@ -12,6 +11,9 @@ export class User extends CoreEntity{
 
     @Column({nullable:true})
     positionClub:string;
+
+    @Column({nullable:true})
+    positionClubVal:number;
 
     @Column({nullable:true})
     positionJigu:string;
@@ -51,6 +53,9 @@ export class User extends CoreEntity{
 
     @ManyToOne(type => Club, club => club.id)
     belongTo:number;
+
+    @Column({nullable:true})
+    clubName:string;
 
     @Column({nullable:true})
     belongToJidae:number;

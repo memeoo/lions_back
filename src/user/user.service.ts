@@ -24,15 +24,20 @@ export class UserService {
     return users;
   }
 
-  async getUsersInClub(clubId: number) : Promise<Array<CreateUserDto>>{
-    const users = await this.users.find({
-      where : {
-        belongTo:clubId
-      },
-      order :{
-        id:'ASC'
-      }
-    });
+  async getUsersInClub(clubId: number) : Promise<Array<any>>{
+    // const users = await this.users.find({
+    //   where : {
+    //     belongTo:clubId
+    //   },
+    //   order :{
+    //     id:'ASC'
+    //   }
+    // });
+
+    const users = await this.users.createQueryBuilder("member")
+    .leftJoinAndSelect("member.sponId", "spon")
+    .where("member.belongTo = :clubId", {clubId:clubId}).getMany()
+
     console.log(" users >> ", users);
     return users;
   } 
@@ -52,16 +57,21 @@ export class UserService {
     .leftJoinAndSelect("member.belongTo", "club")
     .where("member.belongToJiyeok = :jiyeokId ", {jiyeokId : jiyeokId})
     .andWhere("member.positionJiyeok is not null OR member.positionFreeJiyeok is not null")
+    .orderBy({'member.id':'ASC'})
     .getMany();
     console.log(" jiyeokMembers >> ", jiyeokmembers);
     return jiyeokmembers;
   }
 
   async getSponsorByUnit(unit: string, id: number) : Promise<Array<any>> {
-    // unit : club, jidae, jiyeok, jigu // id: 해당 unit의 id ex) clubId, jidaeId, ....
+    // unit : club-belongTo, jidae-belongToJidae, jiyeok-belongToJiyeok, jigu-belongToJigu // id: 해당 unit의 id ex) clubId, jidaeId, ....
+    let whereStatement = "user."+unit+" = :unit "; 
+    
     const sponWithMember = this.users.createQueryBuilder("user")
     .leftJoinAndSelect("user.sponId", "spon")
-    .where("user.belongToJiyeok = :jiyeok ", {jiyeok : id})
+    .where(whereStatement, {unit : id})
+    .andWhere("user.sponId is not null")
+    .orderBy({'user.id':'ASC'})
     .getMany();
     console.log(" sponWithMember >> ", sponWithMember);
 
@@ -70,7 +80,7 @@ export class UserService {
 
   async deleteUser(userId: number): Promise<CoreOutput>{
     const result = await this.users.delete({id:userId});
-    console.log("result => ", result);
+    console.log(" delete user result => ", result);
     
     if(result){
       return {ok:true, error:""};
@@ -90,6 +100,8 @@ export class UserService {
     }
 
     const addedUser = await this.users.save(userData);
+    console.log(" addedUser => ", addedUser);
+
     return {ok:true}  
   }
 
