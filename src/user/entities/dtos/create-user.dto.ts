@@ -7,6 +7,8 @@ export class CreateUserDto{
     positionJiyeok:string;
 
     positionClubVal:number;
+    positionJiguVal:number;
+    positionJiyeokVal:number;
 
     positionFreeClub:string;  
     positionFreeJigu:string;

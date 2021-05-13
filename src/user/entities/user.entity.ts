@@ -19,7 +19,13 @@ export class User extends CoreEntity{
     positionJigu:string;
 
     @Column({nullable:true})
+    positionJiguVal:number;
+
+    @Column({nullable:true})
     positionJiyeok:string;
+    
+    @Column({nullable:true})
+    positionJiyeokVal:number;
     
     @Column({nullable:true})
     positionFreeClub:string;

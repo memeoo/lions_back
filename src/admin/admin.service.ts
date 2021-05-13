@@ -3,8 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Admin } from './entities/admin.entity';
 import { CreateAdminInput, CreateAdminOutput } from './entities/dtos/create-admin.dto';
-import {LoginInput, LoginOutput} from './entities/dtos/login.dto';
-
+import {LoginInput, LoginOutput, AdminInfo} from './entities/dtos/login.dto';
 
 @Injectable()
 export class AdminService {
@@ -36,25 +35,42 @@ export class AdminService {
     try {
       console.log(" paramObj > ", paramObj);
       const admin = await this.admins.findOne(
-        { mId: paramObj.mId, isConfirmed:true }
+        { 
+          where:[
+            {mId: paramObj.mId, pass: paramObj.pass, isConfirmed:true}
+          ] 
+        }
       );
+      console.log(" admin => ", admin);
       if (!admin) {
         return  {
           ok: false,
           error: 'Admin not found',
         };
       }
-      const passwordCorrect = await admin.checkPassword(paramObj.pass);
-      if (!passwordCorrect) {
-        return {
-          ok: false,
-          error: 'Wrong password',
-        };
+
+      // const passwordCorrect = await admin.checkPassword(paramObj.pass);
+      // console.log(" passwordCorrect > ", passwordCorrect);
+
+      // if (!passwordCorrect) {
+      //   return {
+      //     ok: false,
+      //     error: 'Wrong password',
+      //   };
+      // }
+      
+      let adminInfo = {
+        id:admin.id,
+        club:admin.club,
+        jidae:admin.jidae,
+        jiyeok:admin.jiyeok,
+        jigu:admin.jigu,
       }
 
       return {
         ok: true,
         token:"sssssss",
+        adminInfo: adminInfo
       };
 
     } catch (error) {

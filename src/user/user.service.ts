@@ -36,12 +36,35 @@ export class UserService {
 
     const users = await this.users.createQueryBuilder("member")
     .leftJoinAndSelect("member.sponId", "spon")
-    .where("member.belongTo = :clubId", {clubId:clubId}).getMany()
+    .where("member.belongTo = :clubId", {clubId:clubId})
+    // .orderBy('positionClubVal', 'DESC')
+    .getMany()
 
     console.log(" users >> ", users);
     return users;
   } 
 
+  async getUsersInClubMobile(clubId: number) : Promise<Array<any>>{
+    // const users = await this.users.find({
+    //   where : {
+    //     belongTo:clubId
+    //   },
+    //   order :{
+    //     id:'ASC'
+    //   }
+    // });
+
+    const users = await this.users.createQueryBuilder("member")
+    .leftJoinAndSelect("member.sponId", "spon")
+    .where("member.belongTo = :clubId", {clubId:clubId})
+    .orderBy('member.positionClubVal', 'ASC')
+    .getMany()
+
+    console.log(" users >> ", users);
+    return users;
+  } 
+
+  
   async getJiguMembers(jiguId: number) : Promise<Array<CreateUserDto>>{
     const jigumembers = this.users.createQueryBuilder("member")
     .leftJoinAndSelect("member.belongTo", "club")

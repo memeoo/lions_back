@@ -55,6 +55,12 @@ export class UserController {
     return this.userService.getUsersInClub(req.query.id);
   }
 
+  @Get('clubMobile')
+  getUsersInClubMobile(@Req() req): Promise<Array<CreateUserDto>> {
+    console.log(" params 11@@@@@@ => ", req.query);
+    return this.userService.getUsersInClubMobile(req.query.id);
+  }
+
   @Get('jiguMembers')
   getJiguMembers(@Req() req): Promise<Array<CreateUserDto>> {
     console.log(" params 11 => ", req.query);
