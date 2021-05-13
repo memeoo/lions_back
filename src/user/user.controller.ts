@@ -71,6 +71,7 @@ export class UserController {
   getJiyeokMembers(@Req() req): Promise<Array<CreateUserDto>> {
     console.log(" params 11 => ", req.query);
     return this.userService.getJiyeokMembers(req.query.id);
+  
   }
 
   @Delete()

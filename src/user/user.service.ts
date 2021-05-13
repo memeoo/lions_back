@@ -69,10 +69,18 @@ export class UserService {
     const jigumembers = this.users.createQueryBuilder("member")
     .leftJoinAndSelect("member.belongTo", "club")
     .where("member.belongToJigu = :jiguId ", {jiguId : jiguId})
+    // .andWhere("member.positionJiguVal != :zero", {zero: 0})
     .andWhere("member.positionJigu is not null OR member.positionFreeJigu is not null")
+    .orderBy({'member.positionJiguVal':'ASC'})
     .getMany();
-    console.log(" jigumembers >> ", jigumembers);
-    return jigumembers;
+    
+    return jigumembers.then(resolve => {
+      return resolve.filter(member =>{
+        return member.positionJiguVal !== 0;
+      });
+    }).catch(error => {
+      return [];
+    });
   }
 
   async getJiyeokMembers(jiyeokId: number) : Promise<Array<CreateUserDto>>{
@@ -80,10 +88,18 @@ export class UserService {
     .leftJoinAndSelect("member.belongTo", "club")
     .where("member.belongToJiyeok = :jiyeokId ", {jiyeokId : jiyeokId})
     .andWhere("member.positionJiyeok is not null OR member.positionFreeJiyeok is not null")
-    .orderBy({'member.id':'ASC'})
+    .orderBy({'member.positionJiyeokVal':'ASC'})
     .getMany();
     console.log(" jiyeokMembers >> ", jiyeokmembers);
-    return jiyeokmembers;
+
+    return jiyeokmembers.then(resolve => {
+      return resolve.filter(member =>{
+        return member.positionJiyeokVal !== 0;
+      });
+    }).catch(error => {
+      return [];
+    });
+  
   }
 
   async getSponsorByUnit(unit: string, id: number) : Promise<Array<any>> {

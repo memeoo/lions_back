@@ -21,6 +21,7 @@ import { NoticeModule } from './notice/notice.module';
       "host": "localhost",
       "port": 5432,
       "username": "postgres",
+      // "username": "lionsadmin",
       "password": "shsbsy70",
       "database": "lions",
       "synchronize": true,
