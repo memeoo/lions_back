@@ -57,6 +57,7 @@ export class User extends CoreEntity{
     @Column()
     email:string;
 
+
     @ManyToOne(type => Club, club => club.id)
     belongTo:number;
 
@@ -84,5 +85,11 @@ export class User extends CoreEntity{
 
     @Column({nullable:true})
     deviceId:string;
+
+    @Column({nullable:true})
+    fcmToken:string;
+
+    @Column({nullable:true})
+    belongToClub:number;
 
 }

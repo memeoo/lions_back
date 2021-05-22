@@ -13,6 +13,8 @@ import { Spon } from './spon/entities/spon.entity';
 import { Support } from './spon/entities/support.entity';
 import { Notice } from './notice/entities/notice.entity';
 import { NoticeModule } from './notice/notice.module';
+import { PushModule } from './push/push.module';
+
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { NoticeModule } from './notice/notice.module';
     GroupModule,
     SponModule,
     NoticeModule,
+    PushModule,
   ],
   controllers: [],
   providers: [],

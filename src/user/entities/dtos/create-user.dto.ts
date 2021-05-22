@@ -22,6 +22,7 @@ export class CreateUserDto{
     phoneNumWork:string;
     email:string;
     belongTo:number;
+    belongToClub:number;
     sponIdId?:number;
 
     clubName:string;

@@ -60,7 +60,7 @@ export class UserService {
     .orderBy('member.positionClubVal', 'ASC')
     .getMany()
 
-    console.log(" users >> ", users);
+    console.log(" users @@ >> ", users);
     return users;
   } 
 
@@ -184,7 +184,10 @@ export class UserService {
 
   async getOneByDeviceId(deviceId: string) : Promise<User>{
     console.log(" deviceId => ", deviceId);
-    const user = await this.users.findOne({deviceId:deviceId});
+    // const user = await this.users.findOne({deviceId:deviceId});
+    const user = await this.users.createQueryBuilder("member")
+    .where("member.deviceId = :deviceId", {deviceId:deviceId})
+    .getOne();
     console.log(" one user => ", user);
     return user;
   }
