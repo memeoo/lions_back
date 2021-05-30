@@ -31,4 +31,6 @@ export class CreateUserDto{
     belongToJidae:number;
 
     deviceId:string;
+    englishName:string;
+    memberNo:string;
 }

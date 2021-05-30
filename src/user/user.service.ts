@@ -37,7 +37,7 @@ export class UserService {
     const users = await this.users.createQueryBuilder("member")
     .leftJoinAndSelect("member.sponId", "spon")
     .where("member.belongTo = :clubId", {clubId:clubId})
-    // .orderBy('positionClubVal', 'DESC')
+    .orderBy('member.positionClubVal', 'ASC')
     .getMany()
 
     console.log(" users >> ", users);
@@ -71,6 +71,8 @@ export class UserService {
     .where("member.belongToJigu = :jiguId ", {jiguId : jiguId})
     // .andWhere("member.positionJiguVal != :zero", {zero: 0})
     .andWhere("member.positionJigu is not null OR member.positionFreeJigu is not null")
+    .andWhere("member.positionJiguVal != :val", {val:0})
+    // .andWhere("member.positionJiguVal != :val", {val:null})
     .orderBy({'member.positionJiguVal':'ASC'})
     .getMany();
     
@@ -88,6 +90,8 @@ export class UserService {
     .leftJoinAndSelect("member.belongTo", "club")
     .where("member.belongToJiyeok = :jiyeokId ", {jiyeokId : jiyeokId})
     .andWhere("member.positionJiyeok is not null OR member.positionFreeJiyeok is not null")
+    .andWhere("member.positionJiyeokVal != :val", {val:0})
+    // .andWhere("member.positionJiyeokVal != :val", {val:null})
     .orderBy({'member.positionJiyeokVal':'ASC'})
     .getMany();
     console.log(" jiyeokMembers >> ", jiyeokmembers);

@@ -92,4 +92,10 @@ export class User extends CoreEntity{
     @Column({nullable:true})
     belongToClub:number;
 
+    @Column({nullable:true})
+    englishName:string;
+
+    @Column({nullable:true})
+    memberNo:string;
+
 }
