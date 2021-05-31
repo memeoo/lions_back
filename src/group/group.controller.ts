@@ -25,9 +25,19 @@ export class GroupController {
     return this.groupService.getAllJigus();
   }
 
+  @Get('jiguById')
+  getJigu(@Req() req): Promise<resultVal> {
+    return this.groupService.getOneJigu(req.query.id);
+  }
+
   @Get('jiyeok')
   getJiyeoks(@Req() req): Promise<resultVal[]> {
     return this.groupService.getJiyeoks(req.query.id);
+  }
+
+  @Get('jiyeokById')
+  getOneJiyeok(@Req() req): Promise<resultVal> {
+    return this.groupService.getOneJiyeok(req.query.id);
   }
 
   @Get('jidae')
