@@ -77,7 +77,7 @@ export class GroupController {
   }
 
   @Get('clubInfo')
-  getClubInfo(@Req() req): Promise<resultVal[]> {
+  getClubInfo(@Req() req): Promise<any> {
     console.log(" params query => ", req.query);
     return this.groupService.getClubInfo(req.query.id);
   }

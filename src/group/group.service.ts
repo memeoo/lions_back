@@ -79,7 +79,6 @@ export class GroupService {
     return aJigu;
   }
   
-
   async getJiyeoks(jiguId: string): Promise<resultVal[]> {
     const allJiyeoks: resultVal[] = await this.jiyeoks.find({
       select: ["id", "name"],
@@ -138,7 +137,7 @@ export class GroupService {
     return allClubs;
   }
 
-  async getClubInfo(clubId: number): Promise<resultVal[]> {
+  async getClubInfo(clubId: number): Promise<any> {
     const clubInfo: clubInfo[] = await this.clubs.find({
       where: {
         id: clubId
@@ -153,7 +152,12 @@ export class GroupService {
     });
     // console.log(" sponsorClubName => ", sponsorClubName[0].name);
     // clubInfo[0]['sponsorClubName'] = sponsorClubName[0].name;
-    return clubInfo;
+    let returnVal = {
+      clubInfo: clubInfo[0],
+      sponsorClubName: sponsorClubName[0].name,
+    }
+    return returnVal;
+    
   }
 
   async getAllClubs(): Promise<resultVal[]> {

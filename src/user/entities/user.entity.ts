@@ -57,7 +57,6 @@ export class User extends CoreEntity{
     @Column()
     email:string;
 
-
     @ManyToOne(type => Club, club => club.id)
     belongTo:number;
 
