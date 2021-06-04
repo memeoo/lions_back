@@ -14,6 +14,7 @@ import { Support } from './spon/entities/support.entity';
 import { Notice } from './notice/entities/notice.entity';
 import { NoticeModule } from './notice/notice.module';
 import { PushModule } from './push/push.module';
+import comm from './common/common';
 
 
 @Module({
@@ -22,7 +23,7 @@ import { PushModule } from './push/push.module';
       "type": "postgres",
       "host": "localhost",
       "port": 5432,
-      "username": "postgres",
+      "username": comm.DB_USER,
       // "username": "lionsadmin",
       "password": "shsbsy70",
       "database": "lions",
@@ -30,6 +31,7 @@ import { PushModule } from './push/push.module';
       "logging": false,
       "entities":[User, Admin, Jigu, Jiyeok, Jidae, Club, Spon, Support, Notice],
     }),
+
     // GraphQLModule.forRoot({autoSchemaFile: 'schema.gql', playground:true}),
     UserModule,
     AdminModule,
