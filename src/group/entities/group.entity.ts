@@ -15,6 +15,9 @@ export class Jiyeok extends CoreEntity{
 
     @Column({nullable:true})
     belongTo:number;
+
+    @Column({nullable:true})
+    des:string;
 }
 
 @Entity()
@@ -25,6 +28,9 @@ export class Jidae extends CoreEntity{
 
     @Column({nullable:true})
     belongTo:number;
+
+    @Column({nullable:true})
+    des:string;
 
 }
 
