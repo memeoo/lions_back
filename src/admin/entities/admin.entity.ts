@@ -33,6 +33,9 @@ export class Admin extends CoreEntity{
     @Column({nullable:true, default:false})
     isConfirmed:boolean;
 
+    @Column({nullable:true, default:false})
+    isSuperAdmin:boolean;
+
     @BeforeInsert()
     @BeforeUpdate()
     async hashPassword() : Promise<void>{

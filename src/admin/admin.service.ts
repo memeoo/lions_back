@@ -31,22 +31,49 @@ export class AdminService {
     }
   }
 
+  async getOneAdminInfo(adminId: number) : Promise<Admin>{
+    const admin = await this.admins.findOne({id:adminId});
+    return admin;
+  }
+
   async login(paramObj: {mId:string, pass:string}): Promise<LoginOutput> {
     try {
       console.log(" paramObj > ", paramObj);
       const admin = await this.admins.findOne(
         { 
           where:[
-            {mId: paramObj.mId, pass: paramObj.pass, isConfirmed:true}
+            {mId: paramObj.mId, pass: paramObj.pass}
           ] 
         }
       );
+
       console.log(" admin => ", admin);
       if (!admin) {
         return  {
           ok: false,
           error: 'Admin not found',
         };
+      }else{
+        if(!admin.isConfirmed){
+          return  {
+            ok: false,
+            error: 'Admin not confirmed',
+          };
+        }else{
+          let adminInfo = {
+            id:admin.id,
+            club:admin.club,
+            jidae:admin.jidae,
+            jiyeok:admin.jiyeok,
+            jigu:admin.jigu,
+          }
+    
+          return {
+            ok: true,
+            token:"sssssss",
+            adminInfo: adminInfo
+          };
+        }
       }
 
       // const passwordCorrect = await admin.checkPassword(paramObj.pass);
@@ -58,20 +85,6 @@ export class AdminService {
       //     error: 'Wrong password',
       //   };
       // }
-      
-      let adminInfo = {
-        id:admin.id,
-        club:admin.club,
-        jidae:admin.jidae,
-        jiyeok:admin.jiyeok,
-        jigu:admin.jigu,
-      }
-
-      return {
-        ok: true,
-        token:"sssssss",
-        adminInfo: adminInfo
-      };
 
     } catch (error) {
       return {

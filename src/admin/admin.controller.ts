@@ -18,6 +18,11 @@ export class AdminController {
     return this.adminService.login(req.query)
   }
 
+  @Get('info')
+  async getOneAdminInfo(@Req() req): Promise<Admin>{
+    console.log(" req admininfo param >>> ", req.query);
+    return this.adminService.getOneAdminInfo(req.query.id);
+  }
   
   @Post()
   async signup(@Body() createAdminInput: CreateAdminInput) {
