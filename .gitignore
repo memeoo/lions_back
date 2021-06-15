@@ -13,6 +13,9 @@ lerna-debug.log*
 # common
 /src/common/common.ts
 
+#Lions Json
+/src/lions.json
+
 # OS
 .DS_Store
 
