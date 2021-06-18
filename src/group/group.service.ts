@@ -154,8 +154,9 @@ export class GroupService {
     // clubInfo[0]['sponsorClubName'] = sponsorClubName[0].name;
     let returnVal = {
       clubInfo: clubInfo[0],
-      sponsorClubName: sponsorClubName[0].name,
+      sponsorClubName: sponsorClubName[0] ? sponsorClubName[0].name : "",
     }
+    console.log(" returnVal >>>>>>>>> ", returnVal);
     return returnVal;
     
   }
