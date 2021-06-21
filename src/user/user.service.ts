@@ -37,7 +37,7 @@ export class UserService {
     const users = await this.users.createQueryBuilder("member")
     .leftJoinAndSelect("member.sponId", "spon")
     .where("member.belongTo = :clubId", {clubId:clubId})
-    .orderBy('member.positionClubVal', 'ASC')
+    .orderBy({'member.positionClubVal':'ASC', 'member.startDay' :'ASC'})
     .getMany()
 
     console.log(" users >> ", users);
