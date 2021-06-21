@@ -165,8 +165,8 @@ export class GroupService {
     const allClubs: resultVal[] = await this.clubs.find({
       select: ["id", "name"],
       order: {
-        id: 'ASC'
-      }
+        name: 'ASC'
+      } 
     });
     console.log(" allClubs => ", allClubs);
     // allClubs.unshift({id:0, name:"클럽을 입력하세요."});
