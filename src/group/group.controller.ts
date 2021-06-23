@@ -46,6 +46,12 @@ export class GroupController {
     return this.groupService.getJidaes(req.query.id);
   }
 
+  @Get('oneJidae')
+  getOneJidae(@Req() req): Promise<resultVal> {
+    console.log(" params query => ", req.query);
+    return this.groupService.getOneJidae(req.query.id);
+  }
+
   @Get('club')
   getClubs(@Req() req): Promise<resultVal[]> {
     console.log(" params query => ", req.query);

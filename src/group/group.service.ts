@@ -122,6 +122,18 @@ export class GroupService {
     return allJidaes;
   }
 
+  async getOneJidae(jidaeId: number): Promise<resultVal> {
+    const oneJidae : resultVal = await this.jidaes.findOne({
+      select: ["id", "name"],
+      where: {
+        id: jidaeId
+      }
+    });
+    console.log(" oneJidae => ", oneJidae);
+
+    return oneJidae;
+  }
+
   async getClubs(jidaeId: string): Promise<resultVal[]> {
     const allClubs: resultVal[] = await this.clubs.find({
       select: ["id", "name"],
