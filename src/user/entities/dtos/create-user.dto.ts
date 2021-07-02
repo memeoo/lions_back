@@ -33,4 +33,7 @@ export class CreateUserDto{
     deviceId:string;
     englishName:string;
     memberNo:string;
+
+    slogan:string;    //kind of etc (기타 정보)
+
 }

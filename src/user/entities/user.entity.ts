@@ -97,4 +97,7 @@ export class User extends CoreEntity{
     @Column({nullable:true})
     memberNo:string;
 
+    @Column({nullable:true})
+    slogan:string;
+
 }
